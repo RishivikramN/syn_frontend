@@ -1,10 +1,11 @@
 import React,{useState} from 'react'
 import {Alert,Card,Button} from "react-bootstrap"
-import {useAuth} from "../contexts/AuthContext"
+import {useAuth} from "../../contexts/AuthContext"
 import { Link , useHistory} from 'react-router-dom';
+import CenteredContainer from "../authentication/CenteredContainer";
 
 
-export default function DashBoard() {
+export default function Profile() {
     const [error,setError] = useState("");
     const history = useHistory();
 
@@ -22,18 +23,18 @@ export default function DashBoard() {
     }
 
     return (
-        <React.Fragment>
+        <CenteredContainer>
             <Card>
                 <Card.Body>
                     <h2 className="text-center mb-4">Profile</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <strong>Email: </strong>{currentUser && currentUser.emailId}
-                    <Link to="/update-profile" className="btn btn-primary w-100 mt-5"> Update Profile </Link>
+                    {/*<Link to="/update-profile" className="btn btn-primary w-100 mt-5"> Update Profile </Link>*/}
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">
                 <Button variant="link" onClick={handleLogout}>Log Out</Button>
             </div>
-        </React.Fragment>
+        </CenteredContainer>
     )
 }

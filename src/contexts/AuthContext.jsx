@@ -36,13 +36,15 @@ export function AuthProvider({children}){
 
     const logout = () => {
         localStorage.removeItem("authtoken");
+        setToken("");
     }
 
     const value={
         currentUser,
         signUp,
         login,
-        logout
+        logout,
+        token
     }
     return(
         <AuthContext.Provider value={value}>
