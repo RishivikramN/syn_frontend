@@ -1,5 +1,7 @@
 import React,{useState,useEffect,useRef} from 'react'
-import {Alert,Form,Card,Button} from "react-bootstrap"
+import {Button} from "react-bootstrap"
+import {useAuth} from "../../contexts/AuthContext"
+import {useGameDetail} from "../../contexts/GameContext"
 
 //Global Variables
 var myGameArea={};
@@ -12,7 +14,9 @@ export default function StageArea() {
     const restartRef = useRef(null);
     const startRef = useRef(null);
 
-    const [gameCount,setGameCount] = useState(0);
+    const {addGameDetailLogs,updateHighScore}  = useGameDetail();
+    const {currentUser} = useAuth();
+
     const [isCrashed,setIsCrashed] = useState(false);
     const [score,setScore] = useState(0);
     const [isGameStarted,setIsGameStarted] = useState(false);
@@ -56,9 +60,11 @@ export default function StageArea() {
         return ()=>{
             window.removeEventListener('keydown',handleKeyDown);
             window.removeEventListener('keyup',handleKeyUp);
+            if(isGameStarted)
+                clearGameArea();
         }
 
-    },[gameCount]);
+    },[]);
 
     function startGame(canvasRef,restartRef){
         myGameArea = new gamearea(canvasRef,restartRef);
@@ -79,8 +85,6 @@ export default function StageArea() {
     //document.getElementById("canvascontainer").innerHTML = "";
     startGame(canvasRef,restartRef)
   }
-
-  
 
 function gamearea(canvasRef,restartRef) {
     this.canvas = canvasRef.current;
@@ -149,6 +153,8 @@ function gamearea(canvasRef,restartRef) {
         for (let i = 0; i < myObstacles.length; i += 1) {
             if (myGamePiece.crashWith(myObstacles[i])) {
                 myGameArea.stop();
+                addGameDetailLogs(currentUser.emailId,myscore.score);
+                updateHighScore(myscore.score);
                 return;
             } 
         }
@@ -208,8 +214,8 @@ function gamearea(canvasRef,restartRef) {
 
     return (
         <React.Fragment>
-            <h2 className="mt-5">Score: {score}</h2>
-            <canvas className="mt-5" style={{backgroundColor:"gray",width:800,height:500}} ref={canvasRef}/>
+            <h2 className="mt-3">Score: {score}</h2>
+            <canvas className="mt-3" style={{backgroundColor:"white",width:800,height:500}} ref={canvasRef}/>
             {isCrashed && <h2 style={{color:"red"}}>Game Over !!</h2>}
             <div className="d-flex mt-5">
                 {isCrashed && <Button ref={restartRef} onClick={handleRestartGame}>
@@ -225,3 +231,11 @@ function gamearea(canvasRef,restartRef) {
 
 
 
+export function clearGameArea(){
+    myGameArea.stop();
+    myGameArea.clear();
+    myGameArea = {};
+    myGamePiece = {};
+    myObstacles = [];
+    myscore = {};
+  }

@@ -3,7 +3,6 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function PrivateRouteHOC({component:Component , ...restprops}){
     const {currentUser} = useAuth();
-    console.log(currentUser);
     return (
         <Route
         {...restprops}

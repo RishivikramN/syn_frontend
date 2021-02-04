@@ -31,7 +31,6 @@ export function AuthProvider({children}){
         setCurrentUser({emailId:email,password});
         setToken(result.data.toString());
         localStorage.setItem("authtoken",token);
-        console.log(token);
     }
 
     const logout = () => {

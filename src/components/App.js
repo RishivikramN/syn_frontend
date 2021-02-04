@@ -5,18 +5,21 @@ import Login from "./authentication/Login";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import PrivateRouteHOC from "./authentication/PrivateRouteHOC";
 import DashBoard from "./gameboard/DashBoard";
+import { GameDetailProvider } from "../contexts/GameContext";
 
 function App() {
   return (
           <Router>
             <AuthProvider>
-              <Switch>
-                <PrivateRouteHOC exact path="/" component={DashBoard}/>
-                {/* Auth Routes */}
-                <PrivateRouteHOC path="/user" component={Profile}/>
-                <Route path="/signup" component={SignUp}/>
-                <Route path="/login" component={Login}/>
-              </Switch>
+                <GameDetailProvider>
+                <Switch>
+                  <PrivateRouteHOC exact path="/" component={DashBoard}/>
+                  {/* Auth Routes */}
+                  <PrivateRouteHOC path="/user" component={Profile}/>
+                  <Route path="/signup" component={SignUp}/>
+                  <Route path="/login" component={Login}/>
+                </Switch>
+              </GameDetailProvider>
             </AuthProvider>
           </Router>
   );
