@@ -14,7 +14,7 @@ export default function StageArea() {
     const restartRef = useRef(null);
     const startRef = useRef(null);
 
-    const {addGameDetailLogs,updateHighScore}  = useGameDetail();
+    const {addGameDetailLogs,updateHighScore,updateGameCount,gameCount}  = useGameDetail();
     const {currentUser} = useAuth();
 
     const [isCrashed,setIsCrashed] = useState(false);
@@ -155,6 +155,7 @@ function gamearea(canvasRef,restartRef) {
                 myGameArea.stop();
                 addGameDetailLogs(currentUser.emailId,myscore.score);
                 updateHighScore(myscore.score);
+                updateGameCount(-1);
                 return;
             } 
         }
@@ -214,16 +215,17 @@ function gamearea(canvasRef,restartRef) {
 
     return (
         <React.Fragment>
-            <h2 className="mt-3">Score: {score}</h2>
-            <canvas className="mt-3" style={{backgroundColor:"white",width:800,height:500}} ref={canvasRef}/>
+            {(gameCount>0) &&<h2 className="mt-3">Score: {score}</h2>}
+            {(gameCount>0) && <canvas className="mt-3" style={{backgroundColor:"white",width:800,height:500}} ref={canvasRef}/>}
             {isCrashed && <h2 style={{color:"red"}}>Game Over !!</h2>}
             <div className="d-flex mt-5">
-                {isCrashed && <Button ref={restartRef} onClick={handleRestartGame}>
+                {isCrashed && (gameCount > 0) && <Button ref={restartRef} onClick={handleRestartGame}>
                     Restart 
                 </Button>}
-                {!isCrashed && !isGameStarted && <Button ref={startRef} onClick={handleStartGame}>
+                {!isCrashed && !isGameStarted && (gameCount > 0) && <Button ref={startRef} onClick={handleStartGame}>
                     Start
                 </Button>}
+                {(gameCount<=0)?<h2>Attempt is over! come back tomorrow</h2> : null}
             </div>
         </React.Fragment>
     )

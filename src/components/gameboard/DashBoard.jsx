@@ -7,7 +7,7 @@ import StageArea from './StageArea'
 
 export default function DashBoard() {
     const {currentUser} = useAuth();
-    const {getHighScore,highScore} = useGameDetail();
+    const {getHighScore,highScore,gameCount} = useGameDetail();
 
     useEffect(()=>{
         getHighScore(currentUser.emailId);
@@ -16,7 +16,7 @@ export default function DashBoard() {
     return (
         <React.Fragment>
             <div style={{overflowY:"hidden"}}>
-                <NavBar DashBoardScore={highScore}/>
+                <NavBar DashBoardScore={highScore} GameCount={gameCount}/>
                 <Container>
                     <StageArea/>
                 </Container>

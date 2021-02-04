@@ -29,7 +29,7 @@ export default function SignUp() {
             setLoading(true);
             setError("");
             signUp(username, email, password);    
-            history.push("/");
+            history.push("/login");
         } catch (error) {
             setError("Failed to Sign in");    
         }
