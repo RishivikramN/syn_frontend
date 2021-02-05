@@ -40,7 +40,7 @@ export default function NavBar({DashBoardScore,GameCount}) {
                 <Nav>
                     <Nav.Link as={Link} to="#">
                         <div className="text-light">
-                            <strong>Hello! </strong>{currentUser && currentUser.emailId}
+                            <strong>Hello! {currentUser && currentUser.userName} </strong>
                         </div>
                     </Nav.Link>
                     <Nav.Link as={Link} to="#">

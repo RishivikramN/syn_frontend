@@ -215,9 +215,12 @@ function gamearea(canvasRef,restartRef) {
 
     return (
         <React.Fragment>
-            {(gameCount>0) &&<h2 className="mt-3">Score: {score}</h2>}
+            <div className="d-flex">
+                <div>{(gameCount>0) &&<h2 className="mt-3">Score: {score}</h2>}</div>
+                <div className="ml-3 mt-3">{isCrashed && <h2 style={{color:"red"}}>Game Over !!</h2>}</div>
+            </div>
+            
             {(gameCount>0) && <canvas className="mt-3" style={{backgroundColor:"white",width:800,height:500}} ref={canvasRef}/>}
-            {isCrashed && <h2 style={{color:"red"}}>Game Over !!</h2>}
             <div className="d-flex mt-5">
                 {isCrashed && (gameCount > 0) && <Button ref={restartRef} onClick={handleRestartGame}>
                     Restart 
