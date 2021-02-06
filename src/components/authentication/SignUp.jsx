@@ -16,7 +16,7 @@ export default function SignUp() {
     const [validation,setValidation] = useState({email:"",userName:"",password:""});
     const [loading,setLoading] = useState(false);
 
-    const {signUp} = useAuth();
+    const {signUp,serverError} = useAuth();
 
     //handlers
     const handleSubmit = (e)=>{
@@ -30,8 +30,14 @@ export default function SignUp() {
             setLoading(true);
             setError("");
             signUp(username, email, password);    
-            history.push("/login");
-        } catch (error) {
+            console.log(serverError);
+            if(serverError.length > 0){
+                setError(serverError);
+            }
+            else
+                history.push("/login");
+
+        } catch (ex) {
             setError("Failed to Sign in");    
         }
         

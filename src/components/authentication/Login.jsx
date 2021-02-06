@@ -31,6 +31,7 @@ export default function SignUp() {
             history.push("/");
         }
         catch(ex){
+            
             setError("Email/Password is Incorrect");
         }
         setLoading(false);

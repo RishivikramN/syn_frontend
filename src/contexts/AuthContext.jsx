@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import useStateRef from "react-usestateref";
 import axios from "axios";
 import { signupEndpoint, signinEndpoint } from "../Endpoints";
 
@@ -11,6 +12,7 @@ export function useAuth(){
 export function AuthProvider({children}){
     const [currentUser,setCurrentUser] = useState();
     const [token, setToken] = useState("");
+    const [serverError,setServerError, serverErrorRef] = useStateRef("");
 
     const signUp = async (username,email,password) => {
         const JSONPayload = {
@@ -18,8 +20,15 @@ export function AuthProvider({children}){
             emailId : email,
             password
         }
+            setServerError("");
             const response = await axios.post(signupEndpoint, JSONPayload);
-            setCurrentUser(response.data);
+            console.log(response.data.error);
+            if(response.data.error && response.data.error.length > 0){
+                setServerError(response.data.error);
+                console.log(serverErrorRef.current);
+            }
+            else
+                setCurrentUser(response.data);
     }
 
     const login = async ( email, password) =>{
@@ -44,7 +53,8 @@ export function AuthProvider({children}){
         signUp,
         login,
         logout,
-        token
+        token,
+        serverError : serverErrorRef.current
     }
     return(
         <AuthContext.Provider value={value}>
