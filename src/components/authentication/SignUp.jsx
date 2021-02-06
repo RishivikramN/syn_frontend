@@ -16,10 +16,10 @@ export default function SignUp() {
     const [validation,setValidation] = useState({email:"",userName:"",password:""});
     const [loading,setLoading] = useState(false);
 
-    const {signUp,serverError} = useAuth();
+    const {signUp} = useAuth();
 
     //handlers
-    const handleSubmit = (e)=>{
+    const handleSubmit = async (e)=>{
         e.preventDefault();
 
         let username = usernameRef.current.value;
@@ -29,16 +29,11 @@ export default function SignUp() {
         try {
             setLoading(true);
             setError("");
-            signUp(username, email, password);    
-            console.log(serverError);
-            if(serverError.length > 0){
-                setError(serverError);
-            }
-            else
-                history.push("/login");
+            await signUp(username, email, password);    
+            history.push("/login");
 
         } catch (ex) {
-            setError("Failed to Sign in");    
+            setError("Failed to Sign Up");    
         }
         
         setLoading(false);
